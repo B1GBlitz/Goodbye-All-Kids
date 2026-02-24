@@ -22,11 +22,11 @@
             touch-action: manipulation;
         }
 
-        /* --- เอฟเฟกต์หัวใจลอย (อยู่ชั้นล่างสุดเพื่อให้มองเห็นได้ทุกหน้า) --- */
+        /* --- เอฟเฟกต์หัวใจลอย --- */
         .floating-hearts-container { 
             position: fixed; inset: 0; 
             pointer-events: none; 
-            z-index: 1; /* อยู่หลังข้อความแต่หน้าพื้นหลัง */
+            z-index: 1;
         }
         .float-heart {
             position: absolute; bottom: -50px;
@@ -37,22 +37,38 @@
             to { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
         }
 
-        /* --- หน้าแรก (Landing Page) --- */
+        /* --- หน้าแรก (Landing Page) - แก้ไขใหม่ --- */
         #landing-screen {
             position: fixed; inset: 0;
             display: flex; flex-direction: column;
             justify-content: center; align-items: center;
-            background: transparent; /* เปลี่ยนเป็นโปร่งใสเพื่อให้เห็นหัวใจข้างหลัง */
+            background: transparent;
             z-index: 100; transition: opacity 1s ease-out;
+            padding: 20px; /* เพิ่ม padding ไม่ให้ชิดขอบจอเกินไปในมือถือ */
+        }
+
+        /* เพิ่มกรอบสี่เหลี่ยมสีครีมในหน้าแรก */
+        .landing-box {
+            background: rgba(255, 253, 208, 0.95);
+            padding: 40px;
+            border-radius: 30px;
+            box-shadow: 0 10px 30px rgba(231, 84, 128, 0.2);
+            border: 3px dashed var(--heart-dark);
             text-align: center;
+            margin-bottom: 30px; /* ระยะห่างจากปุ่ม */
+            
+            /* จัดตัวหนังสือให้อยู่กลางกรอบ */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 200px; /* ความสูงขั้นต่ำของกรอบ */
         }
 
         .landing-title {
             font-size: 2.5rem; color: var(--heart-dark);
-            margin-bottom: 20px;
+            margin: 0; /* ลบ margin เดิมออก */
             animation: softBounce 2s infinite alternate;
             text-shadow: 2px 2px 5px rgba(0,0,0,0.1);
-            z-index: 101;
         }
         @keyframes softBounce { from { transform: translateY(0); } to { transform: translateY(-10px); } }
 
@@ -67,7 +83,7 @@
         }
         #start-btn:hover { transform: scale(1.05); background: var(--heart-dark); color: var(--box-cream); }
 
-        /* --- ส่วนเนื้อหาหลัก --- */
+        /* --- ส่วนเนื้อหาหลัก (คงเดิม) --- */
         #main-content {
             display: none;
             padding: 20px; height: 100vh; box-sizing: border-box;
@@ -76,7 +92,7 @@
         }
 
         .message-box {
-            background: rgba(255, 253, 208, 0.9); /* เพิ่มความโปร่งแสงนิดๆ */
+            background: rgba(255, 253, 208, 0.9);
             padding: 25px; border-radius: 20px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.1);
             max-width: 600px; width: 100%;
@@ -87,7 +103,7 @@
 
         #typed-text { white-space: pre-wrap; line-height: 1.8; font-size: 1.2rem; }
 
-        /* --- ฉากจบ (Final Scene) --- */
+        /* --- ฉากจบ (คงเดิม) --- */
         #ending-scene {
             display: none; margin-top: 30px;
             text-align: center; width: 100%;
@@ -115,7 +131,9 @@
     <div class="floating-hearts-container" id="bg-hearts"></div>
 
     <div id="landing-screen">
-        <div class="landing-title">Goodbye<br>My Lovely Students 💖</div>
+        <div class="landing-box">
+            <div class="landing-title">Goodbye<br>My Lovely Students 💖</div>
+        </div>
         <button id="start-btn" onclick="startJourney()">คลิกเพื่อฟังความในใจ...</button>
     </div>
 
@@ -134,14 +152,14 @@
                 <span></span><span></span><span class="h">❤️</span><span class="h">❤️</span><span class="h">❤️</span><span></span><span></span>
                 <span></span><span></span><span></span><span class="h">❤️</span><span></span><span></span><span></span>
             </div>
-            <p style="color: var(--heart-dark); margin-top: 15px;">รักและคิดถึงเสมอ... จากครูคอม</p>
+            <p style="color: var(--heart-dark); margin-top: 15px;">รักและคิดถึงเสมอ... จากครูBIG</p>
         </div>
     </div>
 
     <script>
         const message = `ถึงนักเรียนที่น่ารักทุกคน...
 
-เวลา 1 ปีที่ผ่านมา ผ่านไปไวจังเลยเนอะ
+เวลา 1 ปีที่ผ่านมา ผ่านไปไวจังเลยเนอะBIG
 
 ขอบคุณสำหรับทุกความทรงจำดีๆ 
 ขอบคุณที่เป็นเด็กดี (บ้าง ดื้อบ้าง 555)
@@ -152,7 +170,7 @@
 มีความสุขมากๆ กับเส้นทางข้างหน้านะ
 
 อย่าลืมดูแลตัวเองดีๆ นะเด็กๆ
-ครูจะคอยเฝ้าดูความสำเร็จของพวกเราอยู่เสมอ...
+ครูจะคอยเฝ้าดูความสำเร็จของพวกหนูอยู่เสมอ...
 
 รักทุกคนครับ. 💖`;
 
@@ -161,13 +179,11 @@
         const mainContent = document.getElementById('main-content');
         const endingScene = document.getElementById('ending-scene');
 
-        // เริ่มปล่อยหัวใจทันทีที่โหลดหน้าเว็บ (ให้เห็นในหน้าแรก)
         window.onload = function() {
             setInterval(createFloatingHeart, 600);
         };
 
         function startJourney() {
-            // สั่งเล่นเพลง (ต้องเรียกผ่าน User Gesture เช่นการคลิกปุ่ม)
             bgMusic.play().then(() => {
                 console.log("Music is playing");
             }).catch(e => {
