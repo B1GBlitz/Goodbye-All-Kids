@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Itim&family=Vibur&display=swap" rel="stylesheet">
     
     <style>
-        /* --- CSS หลัก (Pastel Theme) --- */
+        /* --- 1. CSS หลักของหน้าเว็บ (Pastel Theme) --- */
         :root { --bg-pastel: #fff9f9; --box-cream: #fffdd0; --text-dark: #5a4a42; --heart-dark: #e75480; }
         body, html { margin: 0; padding: 0; background-color: var(--bg-pastel); color: var(--text-dark); font-family: 'Itim', cursive; width: 100%; min-height: 100%; overflow-x: hidden; }
         
@@ -16,6 +16,7 @@
         .landing-title { font-size: 2.5rem; color: var(--heart-dark); animation: softBounce 2s infinite alternate; text-shadow: 2px 2px 0px #fff; }
         @keyframes softBounce { from { transform: translateY(0); } to { transform: translateY(-10px); } }
         #start-btn { padding: 15px 40px; font-size: 1.3rem; background: var(--box-cream); color: var(--heart-dark); border: 3px solid var(--heart-dark); border-radius: 30px; cursor: pointer; font-weight: bold; box-shadow: 0 5px 15px rgba(231, 84, 128, 0.3); transition: transform 0.2s; }
+        #start-btn:active { transform: scale(0.95); }
 
         #main-content { display: none; padding: 20px; min-height: 100vh; display: flex; flex-direction: column; align-items: center; position: relative; z-index: 10; padding-bottom: 100px; }
         .message-box { background: var(--box-cream); padding: 30px; border-radius: 20px; border: 2px dashed var(--heart-dark); max-width: 600px; width: 90%; margin-top: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.05); z-index: 20; position: relative; }
@@ -25,124 +26,177 @@
         .float-heart { position: absolute; bottom: -50px; font-size: 20px; color: var(--heart-dark); opacity: 0.6; animation: floatUpSoft linear forwards; }
         @keyframes floatUpSoft { to { transform: translateY(-110vh) rotate(360deg); opacity: 0; } }
 
-        /* --- CSS แอนิเมชัน --- */
-        #ending-scene { position: relative; width: 100%; height: 600px; margin-top: 50px; display: none; overflow: visible; }
-        .container { width: 100%; height: 100%; position: relative; display: flex; justify-content: center; }
-        .body_left { width: 100px; height: 100px; position: absolute; bottom: 100px; right: 20%; z-index: 98; }
+        /* --- 2. CSS สำหรับแอนิเมชันหัวใจ (Refactored) --- */
+        #ending-scene {
+            position: relative;
+            width: 100%;
+            height: 600px; /* พื้นที่สำหรับแอนิเมชัน */
+            margin-top: 50px;
+            display: none; /* ซ่อนไว้ก่อน */
+        }
+
+        /* Container จากโค้ดที่ครูส่งมา */
+        .container { width: 100%; height: 100%; position: relative; }
         
-        .love { width: 520px; height: 440px; position: absolute; top: 50px; left: 50%; transform: translateX(-50%) scale(0.6); transform-origin: top center; }
-        @media (max-width: 600px) { .love { transform: translateX(-50%) scale(0.5); top: 20px; } .body_left { right: 5%; bottom: 150px; transform: scale(0.8); } }
+        .body_left { 
+            width: 100px; height: 100px; 
+            position: absolute; bottom: 120px; right: 15%; 
+            z-index: 98; 
+        }
         
+        /* ปรับแต่งตำแหน่งหัวใจใหญ่ */
+        .love { 
+            width: 520px; height: 440px; 
+            position: absolute; top: 0; left: 50%; 
+            transform: translateX(-50%) scale(0.6); /* ย่อให้พอดีมือถือ */
+            transform-origin: top center; 
+        }
+
         .love .block { position: absolute; visibility: hidden; }
         .love .block div {
             width: 40px; height: 40px; position: absolute;
-            /* ✅ จุดที่ 1: เรียกรูปจากโฟลเดอร์ images */
-            background: url("images/heart.png") no-repeat; 
+            background: url("images/heart.png") no-repeat; /* ดึงรูปจากโฟลเดอร์ images */
             background-size: contain;
         }
 
-        .logo { text-align: center; width: 100%; position: absolute; bottom: 0; left: 0; opacity: 0; animation: fadeIn 2s ease-in forwards; animation-delay: 2s; }
-        .logo b { font: 200 50px "Vibur", sans-serif; color: crimson; text-shadow: 0 0 10px #f7bfbf; }
+        /* Logo I Love You */
+        .logo { 
+            text-align: center; width: 100%; position: absolute; bottom: 0; 
+            opacity: 0; animation: fadeIn 2s ease-in forwards; animation-delay: 2s; 
+        }
+        .logo b { font: 200 60px "Vibur", sans-serif; color: crimson; text-shadow: 0 0 10px #f7bfbf; }
+        .logo b span { animation: blink linear infinite 2s; }
+        @keyframes blink { 78% { color: inherit; text-shadow: inherit; } 79%{ color: #333; } 80% { text-shadow: none; } 81% { color: inherit; text-shadow: inherit; } 82% { color: #333; text-shadow: none; } 83% { color: inherit; text-shadow: inherit; } 92% { color: #333; text-shadow: none; } }
         @keyframes fadeIn { to { opacity: 1; } }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .love { transform: translateX(-50%) scale(0.5); }
+            .body_left { right: 5%; bottom: 150px; transform: scale(0.8); }
+        }
     </style>
 </head>
 <body>
-    <audio id="bgMusic" loop preload="auto"><source src="musiczzz.mp3" type="audio/mpeg"></audio>
+
+    <audio id="bgMusic" loop preload="auto">
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    </audio>
+
     <div class="floating-hearts-container" id="bg-hearts"></div>
 
     <div id="landing-screen">
-        <div class="landing-box"><div class="landing-title">Goodbye<br>My Lovely Students 💖</div></div>
+        <div class="landing-box">
+            <div class="landing-title">Goodbye<br>My Lovely Students 💖</div>
+        </div>
         <button id="start-btn" onclick="startJourney()">คลิกเพื่อฟังความในใจ...</button>
     </div>
 
     <div id="main-content">
-        <div class="message-box"><span id="typed-text"></span></div>
+        <div class="message-box">
+            <span id="typed-text"></span>
+        </div>
+
         <div id="ending-scene">
-            <div class="container">
+            <div class="container" onselectstart="return false;" unselectable="on">
+                
                 <div class="body_left">
-                    <img id="gifBiu" src="images/biubiubiu.gif" alt="" style="width: 150px;">
+                    <img id="gifBiu" src="images/biubiubiu.gif" alt="" style="width: 150px;" ondragstart="return false;">
                 </div>
-                <div class="love">
-                    <div class="block"><div class="div1"></div><div class="div2"></div><div class="div3"></div><div class="div4"></div></div>
+
+                <div class="body_center love">
+                    <div class="block">
+                        <div class="div1"></div>
+                        <div class="div2"></div>
+                        <div class="div3"></div>
+                        <div class="div4"></div>
+                    </div>
                 </div>
             </div>
+
             <div class="logo">
                 <b>I <span>Lo</span>ve<span> Y</span>ou</b>
-                <p style="font-family: 'Itim'; font-size: 20px; margin-top: 10px; color: #e75480;">รักและคิดถึงเสมอ... จากครูBIG</p>
+                <p style="font-family: 'Itim'; font-size: 20px; margin-top: 10px; color: #e75480;">รักและคิดถึงเสมอ... จากครูคอม</p>
             </div>
         </div>
     </div>
 
     <script>
-        // ... (ส่วน JS คงเดิม) ...
+        // --- 4. โค้ด JS แอนิเมชัน (ปรับปรุงให้เริ่มทำงานเมื่อสั่งเท่านั้น) ---
         const blk_pitn={block1:[[0,1],[0,0],[-1,0],[-1,-1]],block2:[[0,1],[0,0],[-1,0],[0,-1]],block3:[[-1,1],[0,0],[-1,0],[-1,-1]],block4:[[0,1],[0,0],[-1,0],[-1,-1]],block5:[[-1,1],[0,0],[-1,0],[0,-1]],block6:[[0,-1],[0,0],[-1,0],[1,-1]],block7:[[-1,-1],[0,0],[-1,0],[1,0]],block8:[[-1,1],[0,0],[-1,0],[-1,-1]],block9:[[0,-1],[0,0],[-1,0],[1,0]],block10:[[-1,1],[0,0],[-1,0],[1,0]],block11:[[2,0],[0,0],[-1,0],[1,0]],block12:[[0,1],[0,0],[-1,0],[0,-1]],block13:[[0,1],[0,0],[-1,0],[-1,-1]],block14:[[1,1],[0,0],[-1,0],[1,0]],block15:[[1,-1],[0,0],[-1,0],[1,0]],block16:[[-1,-1],[0,0],[-1,0],[1,0]],block17:[[0,1],[0,0],[-1,0],[0,-1]],block18:[[0,1],[0,0],[-1,0],[-1,-1]],block19:[[0,-1],[0,0],[-1,0],[1,0]],block20:[[1,-1],[0,0],[-1,0],[1,0]],block21:[[0,1],[0,0],[-1,0],[-1,-1]],block22:[[1,1],[0,0],[-1,0],[1,0]],block23:[[0,2],[0,0],[0,-1],[0,1]]};
         const offset_pitn={block1:[5,3],block2:[5,1],block3:[3,4],block4:[3,2],block5:[3,-1],block6:[2,5],block7:[2,1],block8:[1,-1],block9:[1,-3],block10:[1,2],block11:[0,3],block12:[0,0],block13:[-1,-4],block14:[0,-2],block15:[-2,4],block16:[-2,2],block17:[-2,0],block18:[-3,-2],block19:[-4,0],block20:[-3,5],block21:[-5,3],block22:[-4,1],block23:[-6,1]};
 
-        function startHeartAnimation(){let e=document.getElementsByClassName("block"),t=e[0],l=document.getElementsByClassName("love")[0],n=0,o=null;t.style.top="50%",t.style.left="50%",t.style.margin="-20px 0 0 -20px";const a=parseFloat(window.getComputedStyle(t,null).left.slice(0,-2)),c=parseFloat(window.getComputedStyle(t,null).top.slice(0,-2));o=setInterval((()=>{if(++n>=24)return void clearInterval(o);t.style.visibility="visible",t.style.left=a+40*offset_pitn["block"+n][0]+"px",t.style.top=c-40*offset_pitn["block"+n][1]+"px";for(let e=0;e<t.children.length;e++)t.children[e].style.left=-40*blk_pitn["block"+n][e][0]+"px",t.children[e].style.top=-40*blk_pitn["block"+n][e][1]+"px";let e=t.cloneNode(!0);l.appendChild(e)}),300)}
+        function startHeartAnimation(){
+            let blocks = document.getElementsByClassName("block");
+            let block = blocks[0];
+            let love = document.getElementsByClassName("love")[0];
+            let index = 0;
+            let timer = null;
 
+            block.style.top = "50%";
+            block.style.left = "50%";
+            block.style.margin = "-20px 0 0 -20px";
+
+            const block_left = parseFloat(window.getComputedStyle(block, null).left.slice(0, -2));
+            const block_top = parseFloat(window.getComputedStyle(block, null).top.slice(0, -2));
+
+            function Next() {
+                if (++index >= 24) {
+                    clearInterval(timer);
+                    return;
+                }
+                block.style.visibility = "visible";
+                block.style.left = block_left + 40 * offset_pitn["block" + index][0] + "px";
+                block.style.top = block_top - 40 * offset_pitn["block" + index][1] + "px";
+                
+                for (let i = 0; i < block.children.length; i++) {
+                    block.children[i].style.left = -40 * blk_pitn["block" + index][i][0] + "px";
+                    block.children[i].style.top = -40 * blk_pitn["block" + index][i][1] + "px";
+                }
+                
+                let clone_block = block.cloneNode(true);
+                love.appendChild(clone_block);
+            }
+
+            timer = setInterval(() => { Next(); }, 300);
+        }
+
+        // --- 5. ระบบควบคุมหลัก ---
         const message=`ถึงนักเรียนที่น่ารักทุกคน...
 
 เวลา 1 ปีที่ผ่านมา ผ่านไปไวจังเลยเนอะ
+จำวันแรกที่ครูมาได้ไหม ครูตื่นเต้นมากๆ เลยนะ
 
 ขอบคุณสำหรับทุกความทรงจำดีๆ 
-ขอบคุณที่เป็นเด็กดี (บ้าง ดื้อบ้าง 555)
 ขอบคุณที่ทำให้การฝึกสอนของครูมีความหมายมากๆ
 
-ถึงเวลาที่ครูต้องไปแล้ว...
 ขอให้ทุกคนเติบโตอย่างสดใส 
 มีความสุขมากๆ กับเส้นทางข้างหน้านะ
 
-อย่าลืมดูแลตัวเองดีๆ นะเด็กๆ
-ครูจะคอยเฝ้าดูความสำเร็จของพวกหนูอยู่เสมอ...
+รักทุกคนนะครับ. 💖`;
 
-รักทุกคนนะครับ. 💖`;const bgMusic=document.getElementById("bgMusic"),landing=document.getElementById("landing-screen"),mainContent=document.getElementById("main-content"),endingScene=document.getElementById("ending-scene");window.onload=function(){setInterval(createFloatingHeart,600)};function startJourney(){bgMusic.play().catch((e=>console.log("Audio play failed"))),landing.style.opacity="0",setTimeout((()=>{landing.style.display="none",mainContent.style.display="flex",typeWriter()}),1e3)}let i=0;function typeWriter(){i<message.length?(document.getElementById("typed-text").innerHTML+=message.charAt(i),i++,setTimeout(typeWriter,50)):(endingScene.style.display="block",document.getElementById("gifBiu").src+="?t="+(new Date).getTime(),startHeartAnimation(),setTimeout((()=>{window.scrollTo({top:document.body.scrollHeight,behavior:"smooth"})}),100))}function createFloatingHeart(){const e=document.createElement("div");e.innerText="❤",e.classList.add("float-heart"),e.style.left=100*Math.random()+"vw",e.style.fontSize=15*Math.random()+15+"px",e.style.animationDuration=5*Math.random()+5+"s",document.getElementById("bg-hearts").appendChild(e),setTimeout((()=>e.remove()),1e4)}
-    
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Heart love</title>
-    <meta name="language" content="zh-CN">
-    <meta name="title" content="title">
-    <link rel="stylesheet" href="css/love.css">
-</head>
+        const bgMusic=document.getElementById("bgMusic");
+        const landing=document.getElementById("landing-screen");
+        const mainContent=document.getElementById("main-content");
+        const endingScene=document.getElementById("ending-scene");
 
-<body>
+        window.onload=function(){setInterval(createFloatingHeart,600)};
 
-    <audio autoplay="autopaly" loop="loop" id="audios" preload="auto">
-        <source src="" />
-    </audio>
+        function startJourney(){
+            bgMusic.play().catch((e=>console.log("Audio play failed")));
+            landing.style.opacity="0";
+            setTimeout((()=>{
+                landing.style.display="none";
+                mainContent.style.display="flex";
+                typeWriter();
+            }),1000);
+        }
 
-    <div class="container" onselectstart="return false;" unselectable="on" style="-moz-user-select:none;">
-
-        <div class="body_left">
-            <img id="gifBiu" src="images/biubiubiu.gif" alt="" ondragstart="return false;">
-          </div>
-
-        <div class="body_center love">
-            <div class="block">
-                <div class="div1"></div>
-                <div class="div2"></div>
-                <div class="div3"></div>
-                <div class="div4"></div>
-            </div>
-        </div>
-    </div>
-
-    <div class="logo"><b>I <span>Lo</span>ve<span> Y</span>ou</b></div>
-
-    <div class="footer">
-        <div class="border">
-            <div class="border-top"></div>
-            <div class="border-bottom"></div>
-        </div>
-    </div>
-
-    <script>
-        const gif = document.getElementById("gifBiu");
-        gif.src = gif.src + "?t=" + new Date().getTime();
-      </script>
-
-    <script type="text/javascript" src="js/love.js"></script>
-
-</body>
-</html>
+        let i=0;
+        function typeWriter(){
+            if(i<message.length){
+                document.getElementById("typed-text").innerHTML+=message.charAt(i);
+                i++;
+                setTimeout(typeWriter,50);
+            } else {
+                // พิมพ์จบ -> โชว์ฉากจบ -> เริ่มแอนิเมชันหัวใจ
+                endingScene.style.display="
