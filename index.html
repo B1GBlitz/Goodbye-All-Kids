@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Goodbye from ครูคอม</title>
+    <style>
+        /* ตั้งค่าตัวแปรสี */
+        :root { --primary-color: #00ffcc; --bg-color: #0a0a0a; --heart-color: #ff66b3; }
+
+        /* พื้นฐาน CSS */
+        body, html {
+            margin: 0; padding: 0;
+            background-color: var(--bg-color);
+            color: var(--primary-color);
+            font-family: 'Courier New', Courier, monospace; /* ฟอนต์สไตล์พิมพ์ดีด/โค้ด */
+            height: 100%; /* เต็มจอ */
+            overflow: hidden; /* ซ่อนส่วนเกิน */
+            touch-action: manipulation; /* ป้องกันการซูมบนมือถือ */
+        }
+
+        /* ============ ส่วนหน้าแรก (Landing Page) ============ */
+        #landing-screen {
+            position: fixed; inset: 0;
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            background: var(--bg-color);
+            z-index: 100; /* อยู่ชั้นบนสุด */
+            transition: opacity 1s ease-out; /* เอฟเฟกต์ตอนค่อยๆ หายไป */
+        }
+
+        /* ตัวการ์ตูน GIF */
+        .mascot-gif {
+            width: 150px; height: auto;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 0 10px var(--primary-color)); /* เงาเรืองแสง */
+        }
+
+        /* หัวข้อ Goodbye All */
+        .main-title {
+            font-size: 2.5rem; font-weight: bold;
+            text-transform: uppercase; letter-spacing: 2px;
+            margin-bottom: 30px; text-align: center;
+            text-shadow: 3px 3px 0px #ff0055; /* เงาสีแดงแบบ Glitch */
+            animation: titlePulse 2s infinite alternate;
+        }
+        @keyframes titlePulse { from { opacity: 0.8; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
+
+        /* ปุ่มกดเริ่ม */
+        #start-btn {
+            padding: 15px 40px; font-size: 1.2rem;
+            background: transparent; color: var(--primary-color);
+            border: 3px solid var(--primary-color);
+            border-radius: 50px; cursor: pointer; font-family: inherit; font-weight: bold;
+            box-shadow: 0 0 15px var(--primary-color) inset, 0 0 15px var(--primary-color);
+            transition: all 0.3s;
+        }
+        #start-btn:active { transform: scale(0.9); background: var(--primary-color); color: var(--bg-color); }
+
+        /* ============ ส่วนเนื้อหาหลัก (Main Content) ============ */
+        #main-content {
+            display: none; /* ซ่อนไว้ก่อน */
+            padding: 20px; height: 100vh; box-sizing: border-box;
+            overflow-y: auto; position: relative; z-index: 10;
+        }
+
+        /* กล่องข้อความ Terminal */
+        .terminal-box {
+            background: rgba(0, 20, 0, 0.7);
+            padding: 20px; border-radius: 10px;
+            border: 1px solid rgba(0, 255, 204, 0.3);
+            min-height: 50vh;
+        }
+
+        /* ตัวข้อความที่พิมพ์ออกมา */
+        #typed-text {
+            white-space: pre-wrap; /* รักษารูปแบบการขึ้นบรรทัดใหม่ */
+            line-height: 1.6; font-size: 1.1rem;
+            text-shadow: 0 0 5px var(--primary-color);
+        }
+
+        /* เคอร์เซอร์กระพริบ */
+        .cursor { display: inline-block; width: 10px; height: 20px; background: var(--primary-color); animation: blink 1s infinite; vertical-align: text-bottom;}
+        @keyframes blink { 50% { opacity: 0; } }
+
+        /* ============ เอฟเฟกต์หัวใจลอย ============ */
+        .heart-container { position: fixed; inset: 0; pointer-events: none; z-index: 5; overflow: hidden; }
+        .heart {
+            position: absolute; bottom: -50px;
+            font-size: 24px; color: var(--heart-color);
+            opacity: 0;
+            animation: floatUp linear forwards; /* ใช้ JS กำหนดระยะเวลา */
+        }
+        @keyframes floatUp {
+            0% { transform: translateY(0) scale(0.5) rotate(0deg); opacity: 0; }
+            20% { opacity: 0.8; }
+            100% { transform: translateY(-110vh) scale(1.5) rotate(360deg); opacity: 0; }
+        }
+        
+        /* ข้อความเล็กๆ ตอนจบ */
+        #footer-msg { text-align: center; margin-top: 30px; font-size: 0.9rem; opacity: 0.7; display: none;}
+    </style>
+</head>
+<body>
+
+    <audio id="bgMusic" loop>
+        <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <div id="landing-screen">
+        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExM2Q4YzZkNjY2NGU5YjA0ZDM4ZTZkZmY0ZDJhZTRkNzFhZTVhYmUzNSZlcD12MV9pbnRlcm5hbF9naWZzX2dpZklkJmN0PXM/l0HlHFRb68r7vjN1S/giphy.gif" alt="Cute Computer" class="mascot-gif">
+        
+        <div class="main-title">GOODBYE ALL<br>Class of 2025</div>
+        
+        <button id="start-btn" onclick="startJourney()">[ PRESS START ]</button>
+    </div>
+
+    <div id="main-content">
+        <div class="terminal-box">
+            <span id="typed-text"></span><span class="cursor">_</span>
+            
+            <div id="footer-msg">
+                <p>— รักนะเด็กโง่ จากครูคอม —</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="heart-container" id="heart-container"></div>
+
+
+    <script>
+        // --- ส่วนตั้งค่าข้อความ (แก้ไขตรงนี้ได้เลย) ---
+        const message = `> Initializing Final_Message.exe...
+> Loading 1-Year Memories... [COMPLETED]
+
+-----------------------------------
+[ ถึงนักเรียนที่รักทุกคน ]
+
+ตลอด 1 ปีที่ผ่านมา...
+ขอบคุณที่เข้ามาเป็น "ตัวแปร (Variable)" ที่สำคัญที่สุดในการฝึกสอนของครู
+พวกเธอทำให้ Code ชีวิตของครูมีสีสันและสนุกมากๆ
+
+แม้ว่าวันนี้ครูจะต้อง "Log Out" ออกไปแล้ว
+แต่จำไว้นะว่า...
+
+1. อย่ากลัว Error: เพราะมันคือวิธีที่ทำให้เราเก่งขึ้น
+2. หมั่นอัปเดตความรู้: โลกหมุนไว เหมือน Software ที่ต้องอัปเดตเสมอ
+3. ดูแล Hardware ตัวเองดีๆ: พักผ่อนบ้าง อย่าหักโหมนะ
+
+ครูดีใจมากที่ได้สอนพวกเธอทุกคน
+ขอให้เส้นทางข้างหน้า Run ได้อย่างราบรื่นนะ!
+
+> End of Process.
+-----------------------------------
+#GoodLuck #ครูคอมคนเดิม
+`;
+
+        // --- ส่วนการทำงานของระบบ ---
+        const bgMusic = document.getElementById('bgMusic');
+        let isStarted = false;
+
+        // ฟังก์ชันเริ่มทำงานเมื่อกดปุ่ม
+        function startJourney() {
+            if (isStarted) return;
+            isStarted = true;
+
+            // 1. เริ่มเล่นเพลง (ต้องกดปุ่มถึงจะเล่นได้ในมือถือ)
+            bgMusic.volume = 0.5; // ความดัง 50%
+            bgMusic.play().catch(error => console.log("Music play failed:", error));
+
+            // 2. ซ่อนหน้าแรก
+            const landing = document.getElementById('landing-screen');
+            landing.style.opacity = '0';
+            setTimeout(() => {
+                landing.style.display = 'none';
+                document.getElementById('main-content').style.display = 'block';
+                
+                // 3. เริ่มพิมพ์ข้อความ และ ปล่อยหัวใจ
+                typeWriter();
+                setInterval(createHeart, 400); // ปล่อยหัวใจทุก 0.4 วินาที
+            }, 1000);
+        }
+
+        // ฟังก์ชันพิมพ์ข้อความทีละตัว
+        let i = 0;
+        function typeWriter() {
+            const textElement = document.getElementById('typed-text');
+            const mainContent = document.getElementById('main-content');
+            if (i < message.length) {
+                textElement.innerHTML += message.charAt(i);
+                i++;
+                // เลื่อนจอลงตามข้อความ
+                mainContent.scrollTop = mainContent.scrollHeight; 
+                setTimeout(typeWriter, 40); // ความเร็วในการพิมพ์
+            } else {
+                // พิมพ์เสร็จแล้วโชว์ข้อความด้านล่าง
+                document.getElementById('footer-msg').style.display = 'block';
+                mainContent.scrollTop = mainContent.scrollHeight;
+            }
+        }
+
+        // ฟังก์ชันสร้างหัวใจลอย
+        const heartContainer = document.getElementById('heart-container');
+        const hearts = ['❤️', '💖', '💙', '💚', '💛', '💜']; // ชุดหัวใจหลากสี
+        
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            // สุ่มสีหัวใจ
+            heart.innerText = hearts[Math.floor(Math.random() * hearts.length)];
+            // สุ่มตำแหน่งแนวนอน
+            heart.style.left = Math.random() * 100 + 'vw';
+            // สุ่มขนาด
+            heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
+            // สุ่มความเร็วในการลอย (3 ถึง 6 วินาที)
+            heart.style.animationDuration = (Math.random() * 3 + 3) + 's';
+            
+            heartContainer.appendChild(heart);
+            
+            // ลบหัวใจเมื่อลอยพ้นจอ (ป้องกันเครื่องอืด)
+            setTimeout(() => {
+                heart.remove();
+            }, 6000);
+        }
+    </script>
+</body>
+</html>
