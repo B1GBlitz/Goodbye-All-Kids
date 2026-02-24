@@ -37,8 +37,8 @@
             width: 150px;
             height: auto;
             position: absolute;
-            bottom: 150px;
-            right: 25%;
+            bottom: 120px; /* ปรับความสูง */
+            right: 20%;    /* ปรับระยะห่างจากขวา */
             z-index: 98;
         }
 
@@ -55,7 +55,6 @@
             background-size: contain;
         }
 
-        /* ซ่อมแซมส่วนที่ขาดหายไป */
         .logo { text-align: center; width: 100%; position: absolute; bottom: 0; left: 0; opacity: 0; animation: fadeIn 2s ease-in forwards; animation-delay: 2s; }
         .logo b { font: 200 60px "Vibur", sans-serif; color: crimson; text-shadow: 0 0 10px #f7bfbf; }
         
@@ -65,7 +64,7 @@
 
         @media (max-width: 600px) {
             .love { transform: translateX(-50%) scale(0.55); top: 10px; }
-            .body_left { right: 15%; bottom: 180px; transform: scale(0.9); }
+            .body_left { right: 10%; bottom: 160px; transform: scale(0.9); }
         }
     </style>
 </head>
@@ -87,7 +86,7 @@
         <div id="ending-scene">
             <div class="container">
                 <div class="body_left">
-                    <img id="gifBiu" src="https://media.giphy.com/media/UqZ4imFI1hYfL3NjYp/giphy.gif" alt="Cute character pointing" style="width: 100%;" ondragstart="return false;">
+                    <img id="gifBiu" src="biubiubiu.gif" alt="Cute character pointing" style="width: 100%;" ondragstart="return false;">
                 </div>
                 <div class="love">
                     <div class="block"><div class="div1"></div><div class="div2"></div><div class="div3"></div><div class="div4"></div></div>
@@ -172,6 +171,11 @@
                 setTimeout(typeWriter,50);
             }else{
                 endingScene.style.display="block";
+                
+                // รีเฟรช GIF
+                const gif=document.getElementById("gifBiu");
+                if(gif) gif.src = gif.src.split('?')[0] + "?t=" + new Date().getTime();
+                
                 startHeartAnimation();
                 setTimeout(()=>{window.scrollTo({top:document.body.scrollHeight,behavior:"smooth"})},100);
             }
