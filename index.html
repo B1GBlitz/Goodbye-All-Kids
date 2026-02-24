@@ -7,118 +7,63 @@
     <link href="https://fonts.googleapis.com/css2?family=Itim&family=Vibur&display=swap" rel="stylesheet">
     
     <style>
-        /* --- ส่วนที่ 1: CSS หลักของหน้าเว็บ (Pastel Theme) --- */
+        /* --- CSS หลัก (Pastel Theme) --- */
         :root { --bg-pastel: #fff9f9; --box-cream: #fffdd0; --text-dark: #5a4a42; --heart-dark: #e75480; }
         body, html { margin: 0; padding: 0; background-color: var(--bg-pastel); color: var(--text-dark); font-family: 'Itim', cursive; width: 100%; min-height: 100%; overflow-x: hidden; }
         
-        /* หน้าแรก */
         #landing-screen { position: fixed; inset: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; background-color: var(--bg-pastel); z-index: 500; transition: opacity 1s; }
         .landing-box { background: var(--box-cream); padding: 40px; border-radius: 30px; border: 3px dashed var(--heart-dark); text-align: center; margin-bottom: 30px; display: flex; justify-content: center; align-items: center; min-height: 200px; box-shadow: 0 10px 30px rgba(231, 84, 128, 0.2); }
         .landing-title { font-size: 2.5rem; color: var(--heart-dark); animation: softBounce 2s infinite alternate; text-shadow: 2px 2px 0px #fff; }
         @keyframes softBounce { from { transform: translateY(0); } to { transform: translateY(-10px); } }
         #start-btn { padding: 15px 40px; font-size: 1.3rem; background: var(--box-cream); color: var(--heart-dark); border: 3px solid var(--heart-dark); border-radius: 30px; cursor: pointer; font-weight: bold; box-shadow: 0 5px 15px rgba(231, 84, 128, 0.3); transition: transform 0.2s; }
-        #start-btn:active { transform: scale(0.95); }
 
-        /* หน้าเนื้อหา */
         #main-content { display: none; padding: 20px; min-height: 100vh; display: flex; flex-direction: column; align-items: center; position: relative; z-index: 10; padding-bottom: 100px; }
         .message-box { background: var(--box-cream); padding: 30px; border-radius: 20px; border: 2px dashed var(--heart-dark); max-width: 600px; width: 90%; margin-top: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.05); z-index: 20; position: relative; }
         #typed-text { white-space: pre-wrap; line-height: 1.8; font-size: 1.3rem; }
 
-        /* หัวใจลอย Background */
         .floating-hearts-container { position: fixed; inset: 0; pointer-events: none; z-index: 999; }
         .float-heart { position: absolute; bottom: -50px; font-size: 20px; color: var(--heart-dark); opacity: 0.6; animation: floatUpSoft linear forwards; }
         @keyframes floatUpSoft { to { transform: translateY(-110vh) rotate(360deg); opacity: 0; } }
 
-        /* --- ส่วนที่ 2: CSS ของแอนิเมชันหัวใจ (Refactored) --- */
-        #ending-scene {
-            position: relative;
-            width: 100%;
-            height: 600px; /* จองพื้นที่ความสูงให้หัวใจ */
-            margin-top: 50px;
-            display: none; /* ซ่อนไว้ก่อน */
-            overflow: visible;
-        }
-
-        .container {
-            width: 100%;
-            height: 100%;
-            position: relative;
-            display: flex;
-            justify-content: center; /* จัดกึ่งกลางแนวนอน */
-        }
-
-        /* ปรับตำแหน่งตัวการ์ตูน */
-        .body_left {
-            width: 100px;
-            height: 100px;
-            position: absolute;
-            bottom: 100px; /* ระยะห่างจากด้านล่าง */
-            right: 20%; /* อยู่ทางขวาของหัวใจ */
-            z-index: 98;
-        }
+        /* --- CSS แอนิเมชัน --- */
+        #ending-scene { position: relative; width: 100%; height: 600px; margin-top: 50px; display: none; overflow: visible; }
+        .container { width: 100%; height: 100%; position: relative; display: flex; justify-content: center; }
+        .body_left { width: 100px; height: 100px; position: absolute; bottom: 100px; right: 20%; z-index: 98; }
         
-        /* ปรับตำแหน่งหัวใจใหญ่ */
-        .love {
-            width: 520px; 
-            height: 440px;
-            position: absolute;
-            top: 50px; /* ระยะห่างจากด้านบนของ container */
-            left: 50%;
-            transform: translateX(-50%) scale(0.6); /* ย่อขนาดลงนิดนึงเพื่อมือถือ และจัดกึ่งกลาง */
-            transform-origin: top center;
-        }
-
-        /* Responsive สำหรับมือถือ */
-        @media (max-width: 600px) {
-            .love { transform: translateX(-50%) scale(0.5); top: 20px; }
-            .body_left { right: 5%; bottom: 150px; transform: scale(0.8); }
-        }
-
+        .love { width: 520px; height: 440px; position: absolute; top: 50px; left: 50%; transform: translateX(-50%) scale(0.6); transform-origin: top center; }
+        @media (max-width: 600px) { .love { transform: translateX(-50%) scale(0.5); top: 20px; } .body_left { right: 5%; bottom: 150px; transform: scale(0.8); } }
+        
         .love .block { position: absolute; visibility: hidden; }
         .love .block div {
             width: 40px; height: 40px; position: absolute;
-            background: url("images/heart.png") no-repeat; /* แก้ Path รูป */
+            /* ✅ จุดที่ 1: เรียกรูปจากโฟลเดอร์ images */
+            background: url("images/heart.png") no-repeat; 
             background-size: contain;
         }
 
-        /* โลโก้ I Love You */
-        .logo {
-            text-align: center; width: 100%; position: absolute; bottom: 0; left: 0;
-            opacity: 0; animation: fadeIn 2s ease-in forwards; animation-delay: 2s; /* ลดเวลา delay ลง */
-        }
+        .logo { text-align: center; width: 100%; position: absolute; bottom: 0; left: 0; opacity: 0; animation: fadeIn 2s ease-in forwards; animation-delay: 2s; }
         .logo b { font: 200 50px "Vibur", sans-serif; color: crimson; text-shadow: 0 0 10px #f7bfbf; }
         @keyframes fadeIn { to { opacity: 1; } }
     </style>
 </head>
 <body>
-
-    <audio id="bgMusic" loop preload="auto">
-        <source src="musiczzz.mp3" type="audio/mpeg">
-    </audio>
-
+    <audio id="bgMusic" loop preload="auto"><source src="musiczzz.mp3" type="audio/mpeg"></audio>
     <div class="floating-hearts-container" id="bg-hearts"></div>
 
     <div id="landing-screen">
-        <div class="landing-box">
-            <div class="landing-title">Goodbye<br>My Lovely Students 💖</div>
-        </div>
+        <div class="landing-box"><div class="landing-title">Goodbye<br>My Lovely Students 💖</div></div>
         <button id="start-btn" onclick="startJourney()">คลิกเพื่อฟังความในใจ...</button>
     </div>
 
     <div id="main-content">
-        <div class="message-box">
-            <span id="typed-text"></span>
-        </div>
-
+        <div class="message-box"><span id="typed-text"></span></div>
         <div id="ending-scene">
             <div class="container">
                 <div class="body_left">
                     <img id="gifBiu" src="images/biubiubiu.gif" alt="" style="width: 150px;">
                 </div>
                 <div class="love">
-                    <div class="block">
-                        <div class="div1"></div><div class="div2"></div><div class="div3"></div><div class="div4"></div>
-                    </div>
+                    <div class="block"><div class="div1"></div><div class="div2"></div><div class="div3"></div><div class="div4"></div></div>
                 </div>
             </div>
             <div class="logo">
@@ -129,71 +74,13 @@
     </div>
 
     <script>
-        // --- 1. ข้อมูลตำแหน่งหัวใจ (จากไฟล์ love.js เดิม) ---
-        const blk_pitn = { 
-            block1: [[0, 1], [0, 0], [-1, 0], [-1, -1]], block2: [[0, 1], [0, 0], [-1, 0], [0, -1]],
-            block3: [[-1, 1], [0, 0], [-1, 0], [-1, -1]], block4: [[0, 1], [0, 0], [-1, 0], [-1, -1]],
-            block5: [[-1, 1], [0, 0], [-1, 0], [0, -1]], block6: [[0, -1], [0, 0], [-1, 0], [1, -1]],
-            block7: [[-1, -1], [0, 0], [-1, 0], [1, 0]], block8: [[-1, 1], [0, 0], [-1, 0], [-1, -1]],
-            block9: [[0, -1], [0, 0], [-1, 0], [1, 0]], block10: [[-1, 1], [0, 0], [-1, 0], [1, 0]],
-            block11: [[2, 0], [0, 0], [-1, 0], [1, 0]], block12: [[0, 1], [0, 0], [-1, 0], [0, -1]],
-            block13: [[0, 1], [0, 0], [-1, 0], [-1, -1]], block14: [[1, 1], [0, 0], [-1, 0], [1, 0]],
-            block15: [[1, -1], [0, 0], [-1, 0], [1, 0]], block16: [[-1, -1], [0, 0], [-1, 0], [1, 0]],
-            block17: [[0, 1], [0, 0], [-1, 0], [0, -1]], block18: [[0, 1], [0, 0], [-1, 0], [-1, -1]],
-            block19: [[0, -1], [0, 0], [-1, 0], [1, 0]], block20: [[1, -1], [0, 0], [-1, 0], [1, 0]],
-            block21: [[0, 1], [0, 0], [-1, 0], [-1, -1]], block22: [[1, 1], [0, 0], [-1, 0], [1, 0]],
-            block23: [[0, 2], [0, 0], [0, -1], [0, 1]]
-        };
-        const offset_pitn = { 
-            block1: [5, 3], block2: [5, 1], block3: [3, 4], block4: [3, 2], block5: [3, -1],
-            block6: [2, 5], block7: [2, 1], block8: [1, -1], block9: [1, -3], block10: [1, 2],
-            block11: [0, 3], block12: [0, 0], block13: [-1, -4], block14: [0, -2], block15: [-2, 4],
-            block16: [-2, 2], block17: [-2, 0], block18: [-3, -2], block19: [-4, 0], block20: [-3, 5],
-            block21: [-5, 3], block22: [-4, 1], block23: [-6, 1]   
-        };
+        // ... (ส่วน JS คงเดิม) ...
+        const blk_pitn={block1:[[0,1],[0,0],[-1,0],[-1,-1]],block2:[[0,1],[0,0],[-1,0],[0,-1]],block3:[[-1,1],[0,0],[-1,0],[-1,-1]],block4:[[0,1],[0,0],[-1,0],[-1,-1]],block5:[[-1,1],[0,0],[-1,0],[0,-1]],block6:[[0,-1],[0,0],[-1,0],[1,-1]],block7:[[-1,-1],[0,0],[-1,0],[1,0]],block8:[[-1,1],[0,0],[-1,0],[-1,-1]],block9:[[0,-1],[0,0],[-1,0],[1,0]],block10:[[-1,1],[0,0],[-1,0],[1,0]],block11:[[2,0],[0,0],[-1,0],[1,0]],block12:[[0,1],[0,0],[-1,0],[0,-1]],block13:[[0,1],[0,0],[-1,0],[-1,-1]],block14:[[1,1],[0,0],[-1,0],[1,0]],block15:[[1,-1],[0,0],[-1,0],[1,0]],block16:[[-1,-1],[0,0],[-1,0],[1,0]],block17:[[0,1],[0,0],[-1,0],[0,-1]],block18:[[0,1],[0,0],[-1,0],[-1,-1]],block19:[[0,-1],[0,0],[-1,0],[1,0]],block20:[[1,-1],[0,0],[-1,0],[1,0]],block21:[[0,1],[0,0],[-1,0],[-1,-1]],block22:[[1,1],[0,0],[-1,0],[1,0]],block23:[[0,2],[0,0],[0,-1],[0,1]]};
+        const offset_pitn={block1:[5,3],block2:[5,1],block3:[3,4],block4:[3,2],block5:[3,-1],block6:[2,5],block7:[2,1],block8:[1,-1],block9:[1,-3],block10:[1,2],block11:[0,3],block12:[0,0],block13:[-1,-4],block14:[0,-2],block15:[-2,4],block16:[-2,2],block17:[-2,0],block18:[-3,-2],block19:[-4,0],block20:[-3,5],block21:[-5,3],block22:[-4,1],block23:[-6,1]};
 
-        // --- 2. ฟังก์ชันแอนิเมชันหัวใจ (Refactored) ---
-        function startHeartAnimation() {
-            let blocks = document.getElementsByClassName("block");
-            let block = blocks[0];
-            let love = document.getElementsByClassName("love")[0];
-            let index = 0;
-            let timer = null;
+        function startHeartAnimation(){let e=document.getElementsByClassName("block"),t=e[0],l=document.getElementsByClassName("love")[0],n=0,o=null;t.style.top="50%",t.style.left="50%",t.style.margin="-20px 0 0 -20px";const a=parseFloat(window.getComputedStyle(t,null).left.slice(0,-2)),c=parseFloat(window.getComputedStyle(t,null).top.slice(0,-2));o=setInterval((()=>{if(++n>=24)return void clearInterval(o);t.style.visibility="visible",t.style.left=a+40*offset_pitn["block"+n][0]+"px",t.style.top=c-40*offset_pitn["block"+n][1]+"px";for(let e=0;e<t.children.length;e++)t.children[e].style.left=-40*blk_pitn["block"+n][e][0]+"px",t.children[e].style.top=-40*blk_pitn["block"+n][e][1]+"px";let e=t.cloneNode(!0);l.appendChild(e)}),300)}
 
-            block.style.top = "50%";
-            block.style.left = "50%";
-            block.style.margin = "-20px 0 0 -20px";
-
-            const block_left = parseFloat(window.getComputedStyle(block, null).left.slice(0, -2));
-            const block_top = parseFloat(window.getComputedStyle(block, null).top.slice(0, -2));
-
-            function Next() {
-                if (++index >= 24) {
-                    clearInterval(timer);
-                    return;
-                }
-                
-                block.style.visibility = "visible";
-                block.style.left = block_left + 40 * offset_pitn["block" + index][0] + "px";
-                block.style.top = block_top - 40 * offset_pitn["block" + index][1] + "px";
-                
-                for (let i = 0; i < block.children.length; i++) {
-                    block.children[i].style.left = blk_pitn["block" + index][i][0] * -40 + "px";
-                    block.children[i].style.top = blk_pitn["block" + index][i][1] * -40 + "px";
-                }
-
-                let clone_block = block.cloneNode(true);
-                love.appendChild(clone_block);
-            }
-
-            // เริ่มวนลูปสร้างหัวใจ (ปรับความเร็วได้ตรง 300)
-            timer = setInterval(() => {
-                Next();
-            }, 300);
-        }
-
-        // --- 3. ส่วนควบคุมข้อความ (Main Logic) ---
-        const message = `ถึงนักเรียนที่น่ารักทุกคน...
+        const message=`ถึงนักเรียนที่น่ารักทุกคน...
 
 เวลา 1 ปีที่ผ่านมา ผ่านไปไวจังเลยเนอะ
 
@@ -208,59 +95,7 @@
 อย่าลืมดูแลตัวเองดีๆ นะเด็กๆ
 ครูจะคอยเฝ้าดูความสำเร็จของพวกหนูอยู่เสมอ...
 
-รักทุกคนนะครับ. 💖`;
-
-        const bgMusic = document.getElementById('bgMusic');
-        const landing = document.getElementById('landing-screen');
-        const mainContent = document.getElementById('main-content');
-        const endingScene = document.getElementById('ending-scene');
-
-        window.onload = function() { setInterval(createFloatingHeart, 600); };
-
-        function startJourney() {
-            bgMusic.play().catch(e => console.log("Audio play failed"));
-            landing.style.opacity = '0';
-            setTimeout(() => {
-                landing.style.display = 'none';
-                mainContent.style.display = 'flex';
-                typeWriter();
-            }, 1000);
-        }
-
-        let i = 0;
-        function typeWriter() {
-            if (i < message.length) {
-                document.getElementById('typed-text').innerHTML += message.charAt(i);
-                i++;
-                setTimeout(typeWriter, 50);
-            } else {
-                // *** จุดที่แก้: เรียกฟังก์ชันให้หัวใจเริ่มทำงาน ***
-                endingScene.style.display = 'block';
-                
-                // รีเฟรช GIF
-                const gif = document.getElementById("gifBiu");
-                gif.src = gif.src + "?t=" + new Date().getTime();
-                
-                // สั่งเริ่มสร้างหัวใจ! (สำคัญมาก)
-                startHeartAnimation();
-                
-                // เลื่อนจอลง
-                setTimeout(() => {
-                     window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-                }, 100);
-            }
-        }
-
-        function createFloatingHeart() {
-            const heart = document.createElement('div');
-            heart.innerText = '❤';
-            heart.classList.add('float-heart');
-            heart.style.left = Math.random() * 100 + 'vw';
-            heart.style.fontSize = (Math.random() * 15 + 15) + 'px';
-            heart.style.animationDuration = (Math.random() * 5 + 5) + 's';
-            document.getElementById('bg-hearts').appendChild(heart);
-            setTimeout(() => heart.remove(), 10000);
-        }
+รักทุกคนนะครับ. 💖`;const bgMusic=document.getElementById("bgMusic"),landing=document.getElementById("landing-screen"),mainContent=document.getElementById("main-content"),endingScene=document.getElementById("ending-scene");window.onload=function(){setInterval(createFloatingHeart,600)};function startJourney(){bgMusic.play().catch((e=>console.log("Audio play failed"))),landing.style.opacity="0",setTimeout((()=>{landing.style.display="none",mainContent.style.display="flex",typeWriter()}),1e3)}let i=0;function typeWriter(){i<message.length?(document.getElementById("typed-text").innerHTML+=message.charAt(i),i++,setTimeout(typeWriter,50)):(endingScene.style.display="block",document.getElementById("gifBiu").src+="?t="+(new Date).getTime(),startHeartAnimation(),setTimeout((()=>{window.scrollTo({top:document.body.scrollHeight,behavior:"smooth"})}),100))}function createFloatingHeart(){const e=document.createElement("div");e.innerText="❤",e.classList.add("float-heart"),e.style.left=100*Math.random()+"vw",e.style.fontSize=15*Math.random()+15+"px",e.style.animationDuration=5*Math.random()+5+"s",document.getElementById("bg-hearts").appendChild(e),setTimeout((()=>e.remove()),1e4)}
     </script>
 </body>
 </html>
