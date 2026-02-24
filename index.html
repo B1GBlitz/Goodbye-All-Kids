@@ -96,6 +96,53 @@
 ครูจะคอยเฝ้าดูความสำเร็จของพวกหนูอยู่เสมอ...
 
 รักทุกคนนะครับ. 💖`;const bgMusic=document.getElementById("bgMusic"),landing=document.getElementById("landing-screen"),mainContent=document.getElementById("main-content"),endingScene=document.getElementById("ending-scene");window.onload=function(){setInterval(createFloatingHeart,600)};function startJourney(){bgMusic.play().catch((e=>console.log("Audio play failed"))),landing.style.opacity="0",setTimeout((()=>{landing.style.display="none",mainContent.style.display="flex",typeWriter()}),1e3)}let i=0;function typeWriter(){i<message.length?(document.getElementById("typed-text").innerHTML+=message.charAt(i),i++,setTimeout(typeWriter,50)):(endingScene.style.display="block",document.getElementById("gifBiu").src+="?t="+(new Date).getTime(),startHeartAnimation(),setTimeout((()=>{window.scrollTo({top:document.body.scrollHeight,behavior:"smooth"})}),100))}function createFloatingHeart(){const e=document.createElement("div");e.innerText="❤",e.classList.add("float-heart"),e.style.left=100*Math.random()+"vw",e.style.fontSize=15*Math.random()+15+"px",e.style.animationDuration=5*Math.random()+5+"s",document.getElementById("bg-hearts").appendChild(e),setTimeout((()=>e.remove()),1e4)}
-    </script>
+    
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Heart love</title>
+    <meta name="language" content="zh-CN">
+    <meta name="title" content="title">
+    <link rel="stylesheet" href="css/love.css">
+</head>
+
+<body>
+
+    <audio autoplay="autopaly" loop="loop" id="audios" preload="auto">
+        <source src="" />
+    </audio>
+
+    <div class="container" onselectstart="return false;" unselectable="on" style="-moz-user-select:none;">
+
+        <div class="body_left">
+            <img id="gifBiu" src="images/biubiubiu.gif" alt="" ondragstart="return false;">
+          </div>
+
+        <div class="body_center love">
+            <div class="block">
+                <div class="div1"></div>
+                <div class="div2"></div>
+                <div class="div3"></div>
+                <div class="div4"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="logo"><b>I <span>Lo</span>ve<span> Y</span>ou</b></div>
+
+    <div class="footer">
+        <div class="border">
+            <div class="border-top"></div>
+            <div class="border-bottom"></div>
+        </div>
+    </div>
+
+    <script>
+        const gif = document.getElementById("gifBiu");
+        gif.src = gif.src + "?t=" + new Date().getTime();
+      </script>
+
+    <script type="text/javascript" src="js/love.js"></script>
+
 </body>
 </html>
