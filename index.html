@@ -157,7 +157,6 @@
         const message = `ถึงนักเรียนที่น่ารักทุกคน...
 
 เวลา 1 ปีที่ผ่านมา ผ่านไปไวจังเลยเนอะ
-จำวันแรกที่ครูมาได้ไหม ครูตื่นเต้นมากๆ เลยนะ
 
 ขอบคุณสำหรับทุกความทรงจำดีๆ 
 ขอบคุณที่เป็นเด็กดี (บ้าง ดื้อบ้าง 555)
@@ -179,22 +178,33 @@
         const mainContent = document.getElementById('main-content');
         const endingScene = document.getElementById('ending-scene');
 
-        // เริ่มต้นการทำงาน
-        function startJourney() {
-            bgMusic.volume = 0.4; // เสียงเพลงเบาๆ
-            bgMusic.play().catch(e => console.log("Music Start Failed"));
+      // --- ส่วนการทำงานของระบบ ---
+        <audio id="bgMusic" loop>
+        <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
 
+        // ฟังก์ชันเริ่มทำงานเมื่อกดปุ่ม
+        function startJourney() {
+            if (isStarted) return;
+            isStarted = true;
+
+            // 1. เริ่มเล่นเพลง (ต้องกดปุ่มถึงจะเล่นได้ในมือถือ)
+            bgMusic.volume = 0.5; // ความดัง 50%
+            bgMusic.play().catch(error => console.log("Music play failed:", error));
+
+            // 2. ซ่อนหน้าแรก
+            const landing = document.getElementById('landing-screen');
             landing.style.opacity = '0';
             setTimeout(() => {
                 landing.style.display = 'none';
-                mainContent.style.display = 'flex';
+                document.getElementById('main-content').style.display = 'block';
                 
-                // เริ่มพิมพ์ข้อความ และ ปล่อยหัวใจลอย
+                // 3. เริ่มพิมพ์ข้อความ และ ปล่อยหัวใจ
                 typeWriter();
-                setInterval(createFloatingHeart, 600);
+                setInterval(createHeart, 400); // ปล่อยหัวใจทุก 0.4 วินาที
             }, 1000);
         }
-
         // ฟังก์ชันพิมพ์ข้อความ
         let i = 0;
         function typeWriter() {
